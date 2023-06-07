@@ -1,0 +1,38 @@
+{
+  "name": "chat-pro",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Backend for chat application featuring single and group chats",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon server",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tahadar16/ChatPro-Backend.git"
+  },
+  "author": "tahadardev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tahadar16/ChatPro-Backend/issues"
+  },
+  "homepage": "https://github.com/tahadar16/ChatPro-Backend#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.1.4",
+    "express": "^4.18.2",
+    "express-json-validator-middleware": "^3.0.1",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.2.2",
+    "morgan": "^1.10.0",
+    "passport": "^0.6.0",
+    "passport-jwt": "^4.0.1",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
