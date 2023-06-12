@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRouter);
 
 app.use((err, req, res, next) => {
-  handleError(err, res, next);
+  handleError(err, req, res, next);
 });
 
 export default app;

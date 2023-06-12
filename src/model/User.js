@@ -30,6 +30,11 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
+UserSchema.methods.isPasswordValid = async function (password) {
+  const isPasswordValid = await bycrypt.compare(password, this.password);
+  return isPasswordValid;
+};
+
 UserSchema.pre("save", function (next) {
   if (this.isNew && this.role == "admin") {
     const user = mongoose.model("User");
@@ -69,5 +74,4 @@ UserSchema.pre("save", async function (next) {
   next();
 });
 
-// const UserModel =
 export default mongoose.model("User", UserSchema);

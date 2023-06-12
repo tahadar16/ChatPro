@@ -1,5 +1,6 @@
 import { validationResult } from "express-validator";
 import bycrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import User from "../model/User.js";
 
 export const signup = async (req, res, next) => {
@@ -32,31 +33,46 @@ export const signup = async (req, res, next) => {
 };
 
 export const login = async (req, res, next) => {
-  const result = validationResult(req);
-  const errors = result.array();
-  if (errors.length > 0) {
-    console.log("Error type=> ", errors);
-    return next(errors);
-  }
+  // const result = validationResult(req);
+  // const errors = result.array();
+  // if (errors.length > 0) {
+  //   console.log("Error type=> ", errors);
+  //   return next(errors);
+  // }
 
+  // try {
+  // const { email, password } = req.body;
+
+  const user = await User.findOne({ email: req.user.email });
   try {
-    const { email, password } = req.body;
-
-    const user = await User.findOne({ email }).select("+password");
-    console.log("user in login=>", user);
-    if (!user) {
-      return res.status(400).json({ error: { msg: "Invalid credentials" } });
-    }
-
-    const isMatch = await bycrypt.compare(password, user.password);
-    console.log("isMatch=> ", isMatch);
-    if (!isMatch) {
-      const error = new Error("Invalid credentials");
-      return next(error);
-    }
-    user.password = undefined;
-    res.status(200).json({ user, msg: "Login Successful" });
+    jwt.sign(
+      req.user,
+      process.env.JWT_SECRET,
+      { expiresIn: 36000 },
+      async (err, token) => {
+        if (err) throw err;
+        res.json({ token, user });
+      }
+    );
   } catch (error) {
     next(error);
   }
+
+  // const user = await User.findOne({ email }).select("+password");
+  // console.log("user in login=>", user);
+  // if (!user) {
+  //   return res.status(400).json({ error: { msg: "Invalid credentials" } });
+  // }
+
+  // const isMatch = await bycrypt.compare(password, user.password);
+  // console.log("isMatch=> ", isMatch);
+  // if (!isMatch) {
+  //   const error = new Error("Invalid credentials");
+  //   return next(error);
+  // }
+  // user.password = undefined;
+  // res.status(200).json({ user, msg: "Login Successful" });
+  // } catch (error) {
+  //   next(error);
+  // }
 };
